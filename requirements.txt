@@ -1,0 +1,15 @@
+# Visión Artificial [cite: 24, 39]
+opencv-python
+deepface
+tf-keras
+
+# Audio y Procesamiento de Lenguaje Natural [cite: 24, 39]
+openai-whisper
+transformers
+torch
+torchaudio
+
+# Manejo de Datos [cite: 24, 39]
+pandas
+numpy
+moviepy
