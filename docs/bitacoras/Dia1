@@ -1,0 +1,14 @@
+# [cite_start]Bitácora Día 1: Configuración y Planificación [cite: 37]
+
+## [cite_start]Actividades Realizadas [cite: 38]
+* [cite_start]**Entorno:** Configuración exitosa de Python y librerías (OpenCV, DeepFace, Whisper).
+* [cite_start]**Pruebas:** Se validó la detección facial básica y la transcripción de audio inicial.
+* [cite_start]**Diseño:** Se definió una estructura JSON para la integración de módulos[cite: 39, 43].
+
+## [cite_start]Acuerdos de Integración [cite: 43]
+* El módulo CNN entregará emociones por segundo.
+* El módulo Audio entregará texto con marcas de tiempo (timestamps).
+
+## [cite_start]Próximos Pasos (Día 2) [cite: 44]
+* [cite_start]Iniciar el procesamiento frame por frame con DeepFace[cite: 49].
+* [cite_start]Sincronizar audio y video[cite: 49].
