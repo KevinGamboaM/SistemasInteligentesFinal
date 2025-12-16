@@ -1,5 +1,19 @@
-Durante el segundo día se desarrollaron los módulos principales del sistema de forma independiente.
-El módulo CNN procesa los frames del video y extrae emociones faciales utilizando un modelo preentrenado.
-El módulo de audio y texto transcribe el audio con Whisper y analiza emociones del texto mediante Transformers .
-Finalmente, el módulo de utilidades define la estructura JSON común para la salida del sistema.
-Estos módulos cumplen los requisitos del cronograma y dejan el sistema preparado para la integración del Día 3.
+# Bitácora Día 2: Desarrollo de Módulos Base
+
+## Resumen de Actividades
+- **Rotación de Roles:** [Dilan] asumió desarrollo de Visión, [Nicolette] desarrollo de Audio.
+- **Dataset:** Se grabaron y subieron 3 videos de validación a `data/raw/` cubriendo casos de congruencia e incongruencia.
+
+## Detalles Técnicos
+### Módulo de Visión
+- Se implementó `DeepFace` analizando 1 frame por segundo para optimizar tiempo.
+- Desafío: El procesamiento es lento si se analiza cada frame.
+- Solución: Se aplicó un `sample_rate` de 1 segundo.
+
+### Módulo de Audio
+- Se implementó `Whisper Base` logrando transcripciones con timestamps precisos.
+- Se verificó que el modelo funciona correctamente con archivos `.mp4`.
+
+## Estado del Proyecto
+- Módulos individuales funcionales.
+- Integración parcial en `main.py` probada exitosamente.
