@@ -1,0 +1,5 @@
+Durante el segundo día se desarrollaron los módulos principales del sistema de forma independiente.
+El módulo CNN procesa los frames del video y extrae emociones faciales utilizando un modelo preentrenado.
+El módulo de audio y texto transcribe el audio con Whisper y analiza emociones del texto mediante Transformers .
+Finalmente, el módulo de utilidades define la estructura JSON común para la salida del sistema.
+Estos módulos cumplen los requisitos del cronograma y dejan el sistema preparado para la integración del Día 3.
