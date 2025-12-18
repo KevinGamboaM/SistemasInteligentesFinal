@@ -1,52 +1,52 @@
 import os
 import logging
+# ... (imports anteriores de utils, cnn, audio, nlp, sync) ...
 from src.utils import ensure_directories, save_analysis_json
-# Importamos los módulos de los chicos
 from src.cnn_module import analyze_video_emotions
 from src.audio_module import transcribe_audio
 from src.nlp_module import analyze_sentiment_roberta
-
-# Configuración de logs
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+from src.sync_module import merge_multimodal_data
+from src.temporal_module import predict_interview_score # NUEVO IMPORT
 
 def run_pipeline():
-    print("--- 🚀 INICIANDO EJECUCIÓN DEL DÍA 2 ---")
+    print("--- 🚀 DÍA 4: SISTEMA COMPLETO CON IA ---")
     ensure_directories()
     
-    # 1. VIDEO DE PRUEBA 
-    video_filename = "video_validacion_01.mp4"
+    video_filename = "video_validacion_01.mp4" # Asegúrense de tener este video
     video_path = os.path.join("data", "raw", video_filename)
     
     if not os.path.exists(video_path):
-        logging.error(f"No se encontró el video: {video_path}")
-        print("⚠️  URGENTE: Graben un video corto y guárdenlo en data/raw/video_validacion_01.mp4")
+        print("❌ Falta el video.")
         return
 
-    # 2. EJECUCIÓN DE VISIÓN (Dilan)
-    print("\n[1/3] 👁️  Procesando emociones faciales (Dilan)...")
-    vision_data = analyze_video_emotions(video_path, sample_rate=1) # 1 frame cada segundo
+    # [PASOS 1, 2 y 3 IGUALES A AYER...]
+    print("\n1. Procesando Video y Audio...")
+    vision = analyze_video_emotions(video_path)
+    audio = transcribe_audio(video_path)
+    
+    print("\n2. Analizando Texto...")
+    for seg in audio:
+        seg['analisis_texto'] = analyze_sentiment_roberta(seg['text'])
+        
+    print("\n3. Sincronizando...")
+    data_integrada = merge_multimodal_data(vision, audio)
 
-    # 3. EJECUCIÓN DE AUDIO (Nico)
-    print("\n[2/3] 🎤 Transcribiendo audio (Nico)...")
-    audio_segments = transcribe_audio(video_path)
-
-    # 4. EJECUCIÓN DE TEXTO (Eduardo)
-    print("\n[3/3] 🧠 Analizando sentimiento del texto (Eduardo)...")
-    # Enriquecemos los segmentos de audio con el análisis de texto
-    for segment in audio_segments:
-        emocion_texto = analyze_sentiment_roberta(segment['text'])
-        segment['analisis_texto'] = emocion_texto
-
-    # 5. GUARDADO DE RESULTADOS (Integración)
-    print("\n💾 Guardando resultados integrados...")
-    final_output = {
-        "archivo": video_filename,
-        "vision_artificial": vision_data,
-        "audio_y_nlp": audio_segments
+    # [PASO 4: NUEVO - PREDICCIÓN CON LSTM]
+    print("\n4. 🧠 Consultando al Modelo Temporal (RNN)...")
+    score_congruencia = predict_interview_score("models/interview_lstm.pth", data_integrada)
+    
+    veredicto = "CONGRUENTE" if score_congruencia > 0.6 else "POSIBLE INCONGRUENCIA"
+    
+    final_report = {
+        "video": video_filename,
+        "score_ia": score_congruencia,
+        "veredicto_sistema": veredicto,
+        "detalle_secuencia": data_integrada
     }
     
-    save_analysis_json(final_output, f"resultado_dia2_{video_filename}.json")
-    print("✅ ¡Pipeline finalizado! Revisen la carpeta data/processed/")
+    save_analysis_json(final_report, f"reporte_final_dia4.json")
+    print(f"\n📊 SCORE FINAL: {score_congruencia*100:.1f}% ({veredicto})")
+    print("✅ Sistema Inteligente finalizado.")
 
 if __name__ == "__main__":
     run_pipeline()
