@@ -1,17 +1,19 @@
-# Bitácora Día 4: Modelado Temporal (RNN)
+# Bitácora Día 3: Integración y Sincronización
 
 ## Responsables
-- **Datos Sintéticos:** Nico
-- **Arquitectura LSTM:** Eduardo
-- **Entrenamiento:** Kevin
-- **QA:** Dilan
+- *Lógica de Sync:* Kevin
+- *Orquestación:* Dilan
+- *Utils:* Nico
+- *QA/Docs:* Eduardo
 
-## Actividades Críticas
-1. **Generación de Datos:** Ante la falta de cientos de videos etiquetados, se creó `src/data_gen.py` para simular 1000 entrevistas. Esto permitió entrenar la red neuronal.
-2. **Implementación LSTM:** Se diseñó una red neuronal en PyTorch (`src/temporal_module.py`) que analiza la evolución de las emociones.
-3. **Entrenamiento:** Se ejecutó `train_model.py`, logrando disminuir la función de pérdida (Loss) y guardando los pesos en `models/interview_lstm.pth`.
+## Hito del Día
+Se logró conectar los tres módulos independientes. Ahora el sistema es capaz de cruzar la línea de tiempo del video con la del audio.
 
-## Resultados Preliminares
-El sistema ahora no solo muestra datos crudos, sino que emite un juicio de valor (Score de 0 a 1). 
-- Prueba con video coherente: Score 0.85 (Aprobado).
-- Prueba con video "fake" (incongruente): Score 0.32 (Detectado).
+## Desafío Técnico Resuelto: Timestamps
+El principal problema era que el video tiene frames milimétricos (0.03s) y el audio frases largas (2s - 5s).
+*Solución:* Se implementó un algoritmo en src/sync_module.py que agrupa todos los frames visuales que caen dentro del intervalo [start, end] de cada frase de audio y calcula la emoción visual dominante (moda).
+
+## Resultado
+Se genera un JSON unificado en data/processed/ que contiene la estructura:
+{ timestamp, texto, emocion_texto, emocion_rostro, congruencia }
+Este dataset está listo para entrenar la RNN del Día 4.
